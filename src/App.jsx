@@ -5,8 +5,8 @@ import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contacts";
 import Products from "./pages/Products"
-import "./Index.css";
-// import "./App.css";
+import "./index.css";
+
 
 export default function App() {
   return (
