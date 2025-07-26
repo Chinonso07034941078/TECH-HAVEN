@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
- // If not Next.js, use useNavigate from react-router-dom
+
 import { useNavigate } from "react-router-dom";
 import ONE from '../assets/components/ONE.jpg'; 
 
@@ -7,6 +7,9 @@ export default function About() {
   const [scrollY, setScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState({});
   const router = typeof useNavigate === 'function' ? useNavigate() : null;
+
+
+const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -310,32 +313,34 @@ export default function About() {
             data-animate
             id="cta"
           >
-            <div className={`transition-all duration-1000 transform ${
+<div className={`transition-all duration-1000 transform ${
   isVisible.cta ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
 }`}>
   <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-sky-300 via-white to-blue-400 bg-clip-text text-transparent">
     Ready to Shop With Us?
   </h2>
   <p className="text-xl text-slate-300 mb-8 leading-relaxed">
-    Get the gadgets you love, delivered to your door. Let’s make tech easy!
+    Get the gadgets you love, delivered to your door. Let's make tech easy!
   </p>
   <div className="flex flex-col sm:flex-row gap-4 justify-center">
     <button
       className="relative px-8 py-4 bg-gradient-to-r from-sky-500 to-blue-600 text-white rounded-xl hover:from-sky-400 hover:to-blue-500 transition-all duration-300 shadow-lg hover:shadow-sky-500/25 hover:scale-105 group font-medium"
-      onClick={() => {
-        if (router) router('/products');
-        else window.location.href = '/products';
-      }}
+       onClick={() => {
+                     console.time('Navigation');
+                     navigate('/products');
+                     console.timeEnd('Navigation');
+                   }}
     >
       <span className="relative z-10">Get Started</span>
       <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
     </button>
     <button
       className="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-sky-300 rounded-xl transition-all duration-300 hover:scale-105 border border-sky-500/30 hover:border-sky-400/50 font-medium"
-      onClick={() => {
-        if (router) router('/contacts');
-        else window.location.href = '/contacts';
-      }}
+       onClick={() => {
+                     console.time('Navigation');
+                     navigate('/products');
+                     console.timeEnd('Navigation');
+                   }}
     >
       Contact Us
     </button>

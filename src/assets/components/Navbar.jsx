@@ -1,7 +1,8 @@
     import React, { useState, useEffect } from "react";
-    import { Link, useLocation } from "react-router-dom";
+    import { Link, useLocation, useNavigate } from "react-router-dom";
 
     export default function Navbar() {
+      const navigate = useNavigate();
       const [isOpen, setIsOpen] = useState(false);
       const [scrolled, setScrolled] = useState(false);
       const location = useLocation();
@@ -125,12 +126,24 @@
                 {/* Action Buttons */}
                 <div className="hidden md:flex items-center space-x-4">
                   <button className="relative px-5 py-2.5 bg-gradient-to-r from-blue-700 to-blue-800 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-blue-500/25 hover:scale-105 group font-medium">
-                    <span className="relative z-10"></span>
+                    <span
+                     onClick={() => {
+                     console.time('Navigation');
+                     navigate('/products');
+                     console.timeEnd('Navigation');
+                   }}
+                    className="relative z-10">Search Products</span>
                     <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
                   </button>
                   
                   <button className="relative p-3 bg-slate-800 hover:bg-gradient-to-br hover:from-slate-700 hover:to-slate-600 rounded-lg transition-all duration-300 shadow-lg hover:shadow-blue-500/20 hover:scale-110 group">
-                    <span className="text-blue-700 text-xl group-hover:rotate-12 inline-block transition-transform duration-300"></span>
+                    <span 
+                     onClick={() => {
+                     console.time('Navigation');
+                     navigate('/products');
+                     console.timeEnd('Navigation');
+                   }}
+                    className="text-blue-700 text-xl group-hover:rotate-12 inline-block transition-transform duration-300">🛒</span>
                     <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-blue-700 to-blue-800 rounded-full flex items-center justify-center">
                       <span className="text-white text-xs font-bold"></span>
                     </div>
@@ -202,14 +215,26 @@
 
                 {/* Mobile action buttons */}
                 <div className="mt-6 pt-6 border-t border-blue-700/20 space-y-3">
-                  <button className="w-full p-4 bg-gradient-to-r from-blue-700 to-blue-800 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-blue-500/25 hover:scale-105 font-medium">
+                  <button 
+                   onClick={() => {
+        console.time('Navigation');
+        navigate('/products');
+        console.timeEnd('Navigation');
+      }}
+                  className="w-full p-4 bg-gradient-to-r from-blue-700 to-blue-800 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-blue-500/25 hover:scale-105 font-medium">
                     Search Products
                   </button>
                   <button className="w-full p-4 bg-slate-800 hover:bg-slate-700 text-blue-700 rounded-xl transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-2 font-medium">
                     <span>Cart</span>
-                    <span className="text-lg">🛒</span>
+                    <span 
+                     onClick={() => {
+        console.time('Navigation');
+        navigate('/products');
+        console.timeEnd('Navigation');
+      }}
+                    className="text-lg">🛒</span>
                     <div className="w-6 h-6 bg-gradient-to-br from-blue-700 to-blue-800 rounded-full flex items-center justify-center ml-2">
-                      <span className="text-white text-xs font-bold">2</span>
+                      <span className="text-white text-xs font-bold"></span>
                     </div>
                   </button>
                 </div>

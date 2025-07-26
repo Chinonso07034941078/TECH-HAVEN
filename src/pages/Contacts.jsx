@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Contacts() {
+
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -337,10 +340,22 @@ export default function Contacts() {
                 Join thousands of satisfied customers who've discovered the future of technology with Tech-Haven.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="px-8 py-4 bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold rounded-xl hover:from-sky-400 hover:to-blue-500 transition-all duration-300 shadow-lg hover:shadow-sky-500/25 hover:scale-105">
+                <button 
+                  onClick={() => {
+                     console.time('Navigation');
+                     navigate('/products');
+                     console.timeEnd('Navigation');
+                   }}
+                className="px-8 py-4 bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold rounded-xl hover:from-sky-400 hover:to-blue-500 transition-all duration-300 shadow-lg hover:shadow-sky-500/25 hover:scale-105">
                   🛍️ Browse Products
                 </button>
-                <button className="px-8 py-4 bg-slate-800 border border-sky-500/50 text-sky-300 font-semibold rounded-xl hover:bg-slate-700 hover:border-sky-400 transition-all duration-300 hover:scale-105">
+                <button 
+                  onClick={() => {
+                     console.time('Navigation');
+                     navigate('/products');
+                     console.timeEnd('Navigation');
+                   }}
+                className="px-8 py-4 bg-slate-800 border border-sky-500/50 text-sky-300 font-semibold rounded-xl hover:bg-slate-700 hover:border-sky-400 transition-all duration-300 hover:scale-105">
                   📖 Learn More
                 </button>
               </div>

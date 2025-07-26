@@ -27,16 +27,16 @@ const products = [
 { id: 15, name: "Infinix Hot 50i",     category: "Phones", price: "₦220,000",   rating: 4.1, image: "https://img.kwcdn.com/product/open/352b8e0f66144c5b9fc799c07ae82ee5-goods.jpeg?imageView2/2/w/800/q/70/format/webp" },
 
   // ==================== LAPTOPS ====================
-  { id: 21, name: 'HP 840G5',     category: "Laptops", price: "₦3,750,000", rating: 4.9, image: "https://hewlettcomputersolution.co.ke/wp-content/uploads/2022/09/57430622_0480913806.png-scaled-1.jpg" },
+  { id: 21, name: 'HP 840G5',     category: "Laptops", price: "₦375,000", rating: 4.9, image: "https://hewlettcomputersolution.co.ke/wp-content/uploads/2022/09/57430622_0480913806.png-scaled-1.jpg" },
   { id: 22, name: "DELL Latitude 5400 Touch screen",         category: "Laptops", price: "₦380,000", rating: 4.8, image: "https://images.pcliquidations.com/images/isaac/147/147785t550.jpg" },
   { id: 23, name: "DELL 5400 Non-Touch screen",            category: "Laptops", price: "₦350,000", rating: 4.7, image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&q=80" },
   { id: 24, name: "DELL 7390 Touch screen",        category: "Laptops", price: "₦375,000", rating: 4.6, image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=400&q=80" },
   { id: 25, name: "DELL 7490 Touch screen 16GB/512GB",     category: "Laptops", price: "₦460,000", rating: 4.8, image: "https://www.psero.com/wp-content/uploads/2020/07/images-2020-07-14T164359.919.jpeg" },
   { id: 26, name: "HP 840G3 Touch screen",       category: "Laptops", price: "₦280,000", rating: 4.6, image: "https://mombasacomputers.b-cdn.net/wp-content/uploads/2020/06/Hp-Elitebook-840-G3-Intel-Core-i5-6th-Gen-8GB-RAM-256GB-SSD-14-Inches-FHD-Display-f.jpg"},
   { id: 27, name: "HP 840G3 Non-Touch screen",      category: "Laptops", price: "₦260,000", rating: 4.7, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTiraiyKaXLR1t66i3x-oa6NZfV0Gp9oj4yA&s" },
-  { id: 28, name: "HP 9470 8GB/500GB",           category: "Laptops", price: "₦200,000", rating: 4.4, image: "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=400&q=80" },
-  { id: 29, name: "HP 840G2",         category: "Laptops", price: "₦200,000", rating: 4.5, image: "https://images.unsplash.com/photo-1602080858428-57174f9431cf?w=400&q=80" },
-  { id: 30, name: "HP 7370 Touch Screen",        category: "Laptops", price: "₦300,000", rating: 4.6, image: "https://i.ytimg.com/vi/2ZtimZms36s/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLA6I5pGOJU7b4fBSPOLnPjrdnSsww" },
+  { id: 28, name: "HP 9470 8GB/500GB",           category: "Laptops", price: "₦200,000", rating: 4.4, image: "https://i0.wp.com/samstecks.com/wp-content/uploads/2021/11/IMG_20211114_064454_427.jpg?fit=800%2C600&ssl=1" },
+  { id: 29, name: "HP 840G2",         category: "Laptops", price: "₦200,000", rating: 4.5, image: "https://laptopmedia.com/wp-content/uploads/2017/11/HP-EliteBook-840-G2-3.jpg" },
+  { id: 30, name: "HP 7370 Touch Screen",        category: "Laptops", price: "₦300,000", rating: 4.6, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAHH6rB70w8jrjYUGCHN5VdAoWojc1XHuP0w&s" },
   { id: 31, name: 'HP 15 CORE i3 12th Generation',     category: "Laptops", price: "₦450,000", rating: 4.8, image: "https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/56/1608243/1.jpg?2870" },
   { id: 32, name: "DELL Latitude 3380 Touch screen ",            category: "Laptops", price: "₦200,000", rating: 4.7, image: "https://control.spop.com.ng/pages/uploads/product/2024-08-02-i8L1Jn0K2qexQ5ZPcT3u/IMG-20240731-WA0014.jpg" },
   { id: 33, name: "DELL 3330 CORE i3",        category: "Laptops", price: "₦120,000", rating: 4.6, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8fswgGG76v1higPdbh5P3qrRR4mxtwZMTbg&s" },
@@ -77,6 +77,8 @@ const products = [
   { id: 65, name: "PS-4 Wireless controller",     category: "Other Devices", price: "₦18,000",   rating: 4.0, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0ZwtzlxZ73J9kd9L1tfKgVHIi2VvTCyyVfg&s" },
 ];
 
+const [showImageModal, setShowImageModal] = useState(false);
+const [selectedImageProduct, setSelectedImageProduct] = useState(null);
 
   const categories = ['All', 'Phones', 'Laptops', 'Power Banks', 'Other Devices'];
   const filteredProducts = products.filter(p =>
@@ -127,50 +129,130 @@ const products = [
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredProducts.map(product => (
-            <div key={product.id} className="bg-slate-800/40 backdrop-blur border border-blue-800/30 rounded-xl overflow-hidden hover:border-blue-600/50 hover:shadow-xl hover:shadow-blue-600/20 transition-all duration-300 group">
-              <div className="relative aspect-square overflow-hidden">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <button
-                  onClick={() => toggleFavorite(product.id)}
-                  className={`absolute top-3 right-3 w-8 h-8 rounded-full backdrop-blur flex items-center justify-center transition-all ${
-                    favorites.has(product.id) ? 'bg-red-500 text-white' : 'bg-black/30 text-white hover:bg-black/50'
-                  }`}
-                >
-                  <Heart className={`w-4 h-4 ${favorites.has(product.id) ? 'fill-current' : ''}`} />
-                </button>
-              </div>
-              <div className="p-4 space-y-3">
-                <div className="text-sm text-blue-400">{product.category}</div>
-                <h3 className="font-semibold text-white group-hover:text-blue-200 transition-colors">{product.name}</h3>
-                <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className={`w-4 h-4 ${i < Math.floor(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-600'}`} />
-                  ))}
-                  <span className="text-yellow-400 text-sm ml-1">{product.rating}</span>
-                </div>
-                <div className="flex items-center justify-between pt-2">
-                  <span className="text-xl font-bold text-white">{product.price}</span>
-                  <button
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1"
-                    onClick={() => {
-                      setSelectedProduct(product);
-                      setShowModal(true);
-                    }}
-                  >
-                    <ShoppingCart className="w-4 h-4" />
-                    Contact Us
-                  </button>
-                </div>
-              </div>
-            </div>
+       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+  {filteredProducts.map(product => (
+    <div key={product.id} className="bg-slate-800/40 backdrop-blur border border-blue-800/30 rounded-xl overflow-hidden hover:border-blue-600/50 hover:shadow-xl hover:shadow-blue-600/20 transition-all duration-300 group">
+      <div className="relative aspect-square overflow-hidden">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer"
+          onClick={() => {
+            setSelectedImageProduct(product);
+            setShowImageModal(true);
+          }}
+        />
+        <button
+          onClick={() => toggleFavorite(product.id)}
+          className={`absolute top-3 right-3 w-8 h-8 rounded-full backdrop-blur flex items-center justify-center transition-all ${
+            favorites.has(product.id) ? 'bg-red-500 text-white' : 'bg-black/30 text-white hover:bg-black/50'
+          }`}
+        >
+          <Heart className={`w-4 h-4 ${favorites.has(product.id) ? 'fill-current' : ''}`} />
+        </button>
+      </div>
+      <div className="p-4 space-y-3">
+        <div className="text-sm text-blue-400">{product.category}</div>
+        <h3 className="font-semibold text-white group-hover:text-blue-200 transition-colors">{product.name}</h3>
+        <div className="flex items-center gap-1">
+          {[...Array(5)].map((_, i) => (
+            <Star key={i} className={`w-4 h-4 ${i < Math.floor(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-600'}`} />
           ))}
+          <span className="text-yellow-400 text-sm ml-1">{product.rating}</span>
         </div>
+        <div className="flex items-center justify-between pt-2">
+          <span className="text-xl font-bold text-white">{product.price}</span>
+          <button
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1"
+            onClick={() => {
+              setSelectedProduct(product);
+              setShowModal(true);
+            }}
+          >
+            <ShoppingCart className="w-4 h-4" />
+            Contact Us
+          </button>
+        </div>
+      </div>
+    </div>
+  ))}
+
+  {/* Image Modal */}
+  {showImageModal && selectedImageProduct && (
+    <div 
+      className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-in fade-in duration-300"
+      onClick={() => setShowImageModal(false)}
+    >
+      <div 
+        className="relative max-w-4xl max-h-[90vh] w-full bg-slate-800/95 backdrop-blur-xl border border-blue-600/50 rounded-2xl overflow-hidden shadow-2xl shadow-blue-600/20 animate-in zoom-in-95 duration-300 ease-out"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={() => setShowImageModal(false)}
+          className="absolute top-4 right-4 w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center z-10 transition-all duration-200 hover:scale-105"
+        >
+          ✕
+        </button>
+        
+        <div className="flex flex-col lg:flex-row">
+          <div className="lg:w-2/3 aspect-square lg:aspect-auto overflow-hidden">
+            <img
+              src={selectedImageProduct.image}
+              alt={selectedImageProduct.name}
+              className="w-full h-full object-cover animate-in slide-in-from-left duration-500 ease-out"
+            />
+          </div>
+          
+          <div className="lg:w-1/3 p-6 lg:p-8 space-y-6 animate-in slide-in-from-right duration-500 ease-out delay-100">
+            <div>
+              <div className="text-blue-400 font-medium mb-2 animate-in fade-in slide-in-from-bottom duration-400 delay-200">{selectedImageProduct.category}</div>
+              <h2 className="text-2xl lg:text-3xl font-bold text-white mb-4 animate-in fade-in slide-in-from-bottom duration-400 delay-300">{selectedImageProduct.name}</h2>
+            </div>
+            
+            <div className="flex items-center gap-2 animate-in fade-in slide-in-from-bottom duration-400 delay-400">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className={`w-5 h-5 ${i < Math.floor(selectedImageProduct.rating) ? 'text-yellow-400 fill-current' : 'text-gray-600'}`} />
+              ))}
+              <span className="text-yellow-400 text-lg font-semibold ml-1">{selectedImageProduct.rating}</span>
+            </div>
+            
+            <div className="text-3xl font-bold text-white animate-in fade-in slide-in-from-bottom duration-400 delay-500">{selectedImageProduct.price}</div>
+            
+            {selectedImageProduct.description && (
+              <p className="text-gray-300 leading-relaxed animate-in fade-in slide-in-from-bottom duration-400 delay-600">{selectedImageProduct.description}</p>
+            )}
+            
+            <div className="flex gap-3 pt-4 animate-in fade-in slide-in-from-bottom duration-400 delay-700">
+              <button
+                onClick={() => toggleFavorite(selectedImageProduct.id)}
+                className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 ${
+                  favorites.has(selectedImageProduct.id) 
+                    ? 'bg-red-500 hover:bg-red-600 text-white' 
+                    : 'bg-gray-700 hover:bg-gray-600 text-white'
+                }`}
+              >
+                <Heart className={`w-5 h-5 transition-transform duration-200 ${favorites.has(selectedImageProduct.id) ? 'fill-current scale-110' : ''}`} />
+                {favorites.has(selectedImageProduct.id) ? 'Favorited' : 'Add to Favorites'}
+              </button>
+              
+              <button
+                className="flex-1 py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95"
+                onClick={() => {
+                  setSelectedProduct(selectedImageProduct);
+                  setShowModal(true);
+                  setShowImageModal(false);
+                }}
+              >
+                <ShoppingCart className="w-5 h-5" />
+                Contact Us
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+</div>
 
         {filteredProducts.length === 0 && (
           <div className="text-center py-12">

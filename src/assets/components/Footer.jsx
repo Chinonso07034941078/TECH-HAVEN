@@ -1,6 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
+
 
 export default function Footer() {
+  const navigate = useNavigate();
   return (
     <footer className="relative bg-slate-900 text-white py-12 mt-16 overflow-hidden">
       {/* Animated background elements */}
@@ -86,6 +90,7 @@ export default function Footer() {
             <h3 className="text-lg font-semibold text-blue-700 mb-6">Quick Links</h3>
             {['Shop Now', 'New Arrivals', 'Best Sellers', 'Support', 'About Us'].map((link, index) => (
               <a
+                onClick={() => navigate(`/products`)}
                 key={link}
                 href="#"
                 className="block text-gray-300 hover:text-blue-700 transition-all duration-300 hover:translate-x-2 hover:scale-105"
