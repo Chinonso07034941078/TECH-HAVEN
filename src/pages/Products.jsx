@@ -97,7 +97,7 @@ const [selectedImageProduct, setSelectedImageProduct] = useState(null);
       <div className=" border-b border-blue-800/30">
         <div className="container mx-auto px-6 py-8">
           <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent mb-4">
-            TECH-HAVEN STORE
+            TECH-HAVEN PRODUCTS
           </h1>
           <div className="max-w-md mx-auto relative">
             <Search className="absolute left-3 top-3 w-5 h-5 text-blue-400" />

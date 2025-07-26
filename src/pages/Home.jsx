@@ -38,7 +38,8 @@ export default function Homepage() {
 
   const navigate = useNavigate();
 
- 
+ const [showImageModal, setShowImageModal] = useState(false);
+ const [selectedImageProduct, setSelectedImageProduct] = useState(null);
 
   const featuredProducts = [
     {
@@ -242,6 +243,21 @@ export default function Homepage() {
 
 const sampleEmail = generateEmailContent();
 
+// Add state for favorites
+const [favorites, setFavorites] = useState(new Set());
+
+// Add toggle function
+const toggleFavorite = (productId) => {
+  setFavorites(prev => {
+    const newFavorites = new Set(prev);
+    if (newFavorites.has(productId)) {
+      newFavorites.delete(productId);
+    } else {
+      newFavorites.add(productId);
+    }
+    return newFavorites;
+  });
+};
   return (
     <div className="min-h-screen bg-slate-900 text-white overflow-hidden">
       {/* Hero Section with Background Slider */}
@@ -557,6 +573,10 @@ const sampleEmail = generateEmailContent();
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
       {featuredProducts.map((product, index) => (
         <div
+         onClick={() => {
+    setSelectedImageProduct(product);
+    setShowImageModal(true);
+  }}
           key={product.name}
           className="bg-slate-800/80 backdrop-blur-sm rounded-2xl overflow-hidden border border-sky-500/20 hover:border-sky-500/40 transition-all duration-300 group hover:scale-105 hover:shadow-2xl hover:shadow-sky-500/20"
           style={{ animationDelay: `${index * 0.1}s` }}
@@ -709,6 +729,104 @@ const sampleEmail = generateEmailContent();
     )}
   </div>
 </section>
+{/* Image Modal */}
+{/* Image Modal */}
+{showImageModal && selectedImageProduct && (
+  <div 
+    className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-in fade-in duration-300"
+    onClick={() => setShowImageModal(false)}
+  >
+    <div 
+      className="relative max-w-4xl max-h-[90vh] w-full bg-slate-900/95 backdrop-blur-xl border border-sky-600/50 rounded-2xl overflow-hidden shadow-2xl shadow-sky-600/20 animate-in zoom-in-95 duration-300 ease-out"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <button
+        onClick={() => setShowImageModal(false)}
+        className="absolute top-4 right-4 w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center z-10 transition-all duration-200 hover:scale-105"
+      >
+        ✕
+      </button>
+      
+      <div className="flex flex-col lg:flex-row">
+        <div className="lg:w-2/3 aspect-square lg:aspect-auto overflow-hidden">
+          <img
+            src={selectedImageProduct.image}
+            alt={selectedImageProduct.name}
+            className="w-full h-full object-cover animate-in slide-in-from-left duration-500 ease-out"
+          />
+        </div>
+        
+        <div className="lg:w-1/3 p-6 lg:p-8 space-y-6 animate-in slide-in-from-right duration-500 ease-out delay-100">
+          <div className="animate-in fade-in slide-in-from-bottom duration-400 delay-200">
+            <div className="inline-block mb-3">
+              <span className="bg-gradient-to-r from-sky-500 to-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+                {selectedImageProduct.badge}
+              </span>
+            </div>
+            <h2 className="text-2xl lg:text-3xl font-bold text-white mb-4">{selectedImageProduct.name}</h2>
+          </div>
+          
+          <div className="flex items-center gap-2 animate-in fade-in slide-in-from-bottom duration-400 delay-300">
+            {[...Array(5)].map((_, i) => (
+              <span
+                key={i}
+                className={`text-xl ${i < Math.floor(selectedImageProduct.rating) ? 'text-yellow-400' : 'text-gray-600'}`}
+              >
+                ★
+              </span>
+            ))}
+            <span className="text-yellow-400 text-lg font-semibold ml-1">({selectedImageProduct.rating})</span>
+          </div>
+          
+          <div className="animate-in fade-in slide-in-from-bottom duration-400 delay-400">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-3xl font-bold text-sky-400">{selectedImageProduct.price}</span>
+              <span className="text-gray-500 line-through text-lg">{selectedImageProduct.originalPrice}</span>
+            </div>
+          </div>
+          
+          {selectedImageProduct.description && (
+            <p className="text-gray-300 leading-relaxed animate-in fade-in slide-in-from-bottom duration-400 delay-500">
+              {selectedImageProduct.description}
+            </p>
+          )}
+          
+          <div className="flex gap-3 pt-4 animate-in fade-in slide-in-from-bottom duration-400 delay-600">
+            <button
+              onClick={() => toggleFavorite(selectedImageProduct.id || selectedImageProduct.name)}
+              className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 ${
+                favorites.has(selectedImageProduct.id || selectedImageProduct.name)
+                  ? 'bg-red-500 hover:bg-red-600 text-white' 
+                  : 'bg-gray-700 hover:bg-gray-600 text-white'
+              }`}
+            >
+              <span className={`text-lg transition-transform duration-200 ${
+                favorites.has(selectedImageProduct.id || selectedImageProduct.name) ? 'scale-110' : ''
+              }`}>
+                {favorites.has(selectedImageProduct.id || selectedImageProduct.name) ? '♥' : '♡'}
+              </span>
+              {favorites.has(selectedImageProduct.id || selectedImageProduct.name) ? 'Favorited' : 'Add to Favorites'}
+            </button>
+            
+            <button
+              className="flex-1 py-3 px-4 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95"
+              onClick={() => {
+                setSelectedProduct(selectedImageProduct);
+                setShowModal(true);
+                setShowImageModal(false);
+              }}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l1.5 6m0 0h9" />
+              </svg>
+              Purchase
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
 
       {/* Features Section */}
       <section className="py-20 px-6">
@@ -904,6 +1022,10 @@ const sampleEmail = generateEmailContent();
         </section>
       )}
     </section>
+
+
+   
+
 
       {/* Custom CSS for animations */}
       <style jsx>{`
