@@ -46,12 +46,12 @@ const ProductCard = ({ product, index, onOpen }) => {
           <Heart className="w-4 h-4 text-slate-700" />
         </button>
 
-        <div className="absolute inset-0 flex items-center justify-center p-4 md:p-8 transition-transform duration-700 group-hover:scale-110">
+        <div className="absolute inset-0 flex items-center justify-center  transition-transform duration-700 group-hover:scale-110">
           <img 
             src={product.image} 
             alt={product.name} 
             loading="lazy"
-            className="w-full h-full object-contain drop-shadow-xl transition-all duration-500 max-h-[180px] md:max-h-none"
+            className="w-full h-full object-cover drop-shadow-xl transition-all duration-500 max-h-none"
           />
         </div>
 

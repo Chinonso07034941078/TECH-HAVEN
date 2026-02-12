@@ -31,7 +31,7 @@ export default function About() {
     {
       name: "Amarachi Favour Okorie",
       role: "CEO & Founder",
-      image: ONE, // Using the imported image
+      image: 'https://res.cloudinary.com/dnvgl9k4i/image/upload/v1770919779/138118836_231369845141705_6139008080191436482_n_mhz8oe.jpg', // Using the imported image
       bio: "Founder of Tech-Haven. Passionate about making quality gadgets accessible across Nigeria.",
       specialty: "Customer Experience & Logistics"
     }
@@ -118,11 +118,7 @@ export default function About() {
           </p>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce z-10">
-          <span className="text-xs font-mono uppercase text-slate-400">Scroll</span>
-          <ArrowRight className="w-4 h-4 text-blue-500 rotate-90" />
-        </div>
+       
       </section>
 
       {/* 2. MISSION SECTION (WHITE BG) */}
@@ -159,7 +155,7 @@ export default function About() {
                   <img 
                     src={ONE} 
                     alt="Mission Illustration" 
-                    className="w-full h-80 object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                    className="w-full h-80 object-cover grayscale-0 transition-all duration-700"
                   />
                   {/* Overlay Grid */}
                   <div className="absolute inset-0 opacity-10" style={{

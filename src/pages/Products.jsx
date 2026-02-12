@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { Search, Heart, ShoppingCart, Star, X, Sparkles, ChevronDown, Command, Layers, ChevronRight } from 'lucide-react';
+import ImmersiveModal from '../assets/components/ImmersiveModal';
 
 // ==========================================
 // 1. DATA & CONFIGURATION
@@ -25,29 +26,32 @@ const formatPrice = (price) =>
 // 2. SUB-COMPONENTS
 // ==========================================
 
-const ProductCard = ({ product, index, onOpen, isHero }) => {
+const ProductCard = ({ product, index, onOpen, isHero, isFavorite, onToggleFavorite }) => {
   const cardRef = useRef(null);
 
-  // Desktop Magnetic Effect
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback((e) => {
     if (!cardRef.current || window.innerWidth < 768) return;
     const rect = cardRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
-    cardRef.current.style.transform = `translate(${x * 0.05}px, ${y * 0.05}px) scale(1.02)`;
-  };
+    cardRef.current.style.transform = `translate(${x * 0.03}px, ${y * 0.03}px) scale(1.02)`;
+  }, []);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     if (!cardRef.current) return;
     cardRef.current.style.transform = 'translate(0px, 0px) scale(1)';
-  };
+  }, []);
 
-  // Dynamic sizing for desktop
   const sizeClass = isHero 
     ? 'md:col-span-2 md:row-span-2' 
     : index % 5 === 0 
     ? 'md:col-span-2 md:row-span-1' 
     : '';
+
+  const handleFavoriteClick = (e) => {
+    e.stopPropagation(); 
+    onToggleFavorite(product.id);
+  };
 
   return (
     <div
@@ -56,29 +60,22 @@ const ProductCard = ({ product, index, onOpen, isHero }) => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className={`group relative overflow-hidden cursor-pointer transition-all duration-500 ease-out 
-        w-full mb-4 md:mb-6  md:rounded-none 
+        w-full mb-4 md:mb-6 rounded-t-4xl md:rounded-none shadow-sm md:shadow-none
         ${sizeClass}`}
       style={{ backgroundColor: product.color }}
     >
-      {/* Mobile Layout: Adjusted height for 2-column grid */}
       <div className={`relative h-full flex flex-col justify-end 
         h-[320px] md:h-[400px]
         ${isHero ? 'md:h-auto' : ''}`}>
         
-        {/* Floating Action Button (Mobile) */}
-        <button 
-          className="absolute top-3 right-3 z-20 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg md:hidden active:scale-90 transition-transform"
-          onClick={(e) => { e.stopPropagation(); alert('Favorited!'); }}
-        >
-          <Heart className="w-4 h-4 text-slate-700" />
-        </button>
+       
 
-        <div className="absolute inset-0 flex items-center justify-center p-4 md:p-8 transition-transform duration-700 group-hover:scale-110">
+        <div className="absolute inset-0 flex items-center justify-center py-4 md:p-8 transition-transform duration-700  group-hover:scale-110">
           <img 
             src={product.image} 
             alt={product.name} 
-            loading="lazy"
-            className="w-full h-full object-contain drop-shadow-xl transition-all duration-500 max-h-[180px] md:max-h-none"
+            loading={isHero ? "eager" : "lazy"}
+            className="w-full h-full object-contain  drop-shadow-xl transition-all duration-500 max-h-[180px] md:max-h-none"
           />
         </div>
 
@@ -99,87 +96,13 @@ const ProductCard = ({ product, index, onOpen, isHero }) => {
               {formatPrice(product.price)}
             </p>
             
-            {/* Mobile: Explicit View Button */}
-            <div className="flex items-center gap-1 text-xs text-white/80 md:hidden">
+            <div className="flex items-center gap-1 text-xs text-white/80 md:hidden group-hover:text-white transition-colors">
               View <ChevronRight className="w-3 h-3" />
             </div>
             
-            {/* Desktop: Star Rating */}
             <div className="hidden md:flex items-center gap-1">
                <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const ImmersiveModal = ({ product, onClose }) => {
-  if (!product) return null;
-
-  return (
-    <div 
-      className="fixed inset-0 z-50 flex flex-col md:flex-row md:items-center md:justify-center p-0 md:p-8 bg-white md:bg-black/95 transition-all duration-300"
-      onClick={onClose}
-    >
-      {/* Mobile: Slide Up Handle */}
-      <div className="w-12 h-1.5 bg-slate-300 rounded-full mx-auto mt-4 mb-2 md:hidden"></div>
-      
-      <div 
-        className="relative w-full h-full md:max-w-6xl md:h-[90vh] grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-8 overflow-y-auto md:overflow-visible"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Top/Left: Visual */}
-        <div className="relative bg-slate-50 h-1/2 md:h-full flex items-center justify-center p-4">
-          <button 
-            onClick={onClose} 
-            className="absolute top-4 left-4 md:top-0 md:right-0 md:left-auto w-10 h-10 bg-slate-100 md:bg-white/10 rounded-full flex items-center justify-center hover:bg-slate-200 z-20"
-          >
-            <X className="w-5 h-5 text-slate-600 md:text-white" />
-          </button>
-          <img 
-            src={product.image} 
-            alt={product.name} 
-            className="w-4/5 h-4/5 object-contain transition-transform duration-1000"
-          />
-        </div>
-
-        {/* Bottom/Right: Info */}
-        <div className="relative flex flex-col justify-end md:justify-center h-1/2 md:h-auto bg-white p-6 md:bg-transparent rounded-t-3xl -mt-8 z-10 shadow-2xl md:shadow-none">
-          
-          {/* Mobile friendly scrollable content */}
-          <div className="overflow-y-auto">
-            <span className="text-xs font-mono text-blue-600 uppercase tracking-widest">{product.category}</span>
-            <h2 className="text-3xl md:text-5xl font-heading font-bold mt-2 mb-4 tracking-tighter uppercase text-slate-900 md:text-white">
-              {product.name}
-            </h2>
-            
-            <div className="flex items-center gap-2 mb-6">
-              {[...Array(5)].map((_, i) => <Star key={i} className={`w-5 h-5 ${i < Math.floor(product.rating) ? 'text-amber-400 fill-amber-400' : 'text-slate-300'}`} />)}
-              <span className="text-sm text-slate-500 md:text-slate-300 ml-2">{product.rating} Rating</span>
-            </div>
-
-            <p className="text-4xl md:text-5xl font-heading font-bold mb-6 text-slate-900 md:text-white">
-              {formatPrice(product.price)}
-            </p>
-
-            <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="bg-slate-50 md:bg-white/5 p-4 rounded-xl">
-                <span className="text-xs text-slate-400 block mb-1">Status</span>
-                <span className="font-bold text-emerald-600 flex items-center gap-1">
-                  <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span> In Stock
-                </span>
-              </div>
-              <div className="bg-slate-50 md:bg-white/5 p-4 rounded-xl">
-                <span className="text-xs text-slate-400 block mb-1">Warranty</span>
-                <span className="font-bold text-slate-900 md:text-white">1 Year</span>
-              </div>
-            </div>
-
-            <button className="w-full py-4 bg-slate-900 md:bg-white text-white md:text-slate-900 font-heading font-bold text-lg rounded-full hover:bg-blue-600 hover:text-white transition-colors shadow-lg flex items-center justify-center gap-2 active:scale-95">
-              <ShoppingCart className="w-5 h-5" /> Purchase
-            </button>
           </div>
         </div>
       </div>
@@ -192,16 +115,50 @@ const ImmersiveModal = ({ product, onClose }) => {
 // ==========================================
 
 const ProductsRevolution = () => {
-  const [heroProduct] = useState(PRODUCTS[0]);
-  const [gridProducts] = useState(PRODUCTS.slice(1));
+  const heroSlides = PRODUCTS.slice(0, 3);
+  const gridProducts = PRODUCTS.slice(3);
+  
+  const [currentHeroSlide, setCurrentHeroSlide] = useState(0);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showCommand, setShowCommand] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [favorites, setFavorites] = useState(new Set());
+
+  // Auto-advance Hero Slider
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentHeroSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [heroSlides.length]);
+
+  // Persistence
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("techhaven_favorites");
+      if (stored) setFavorites(new Set(JSON.parse(stored)));
+    } catch (error) { console.error("Error loading favorites", error); }
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("techhaven_favorites", JSON.stringify([...favorites]));
+    } catch (error) { console.error("Error saving favorites", error); }
+  }, [favorites]);
 
   useEffect(() => {
     const handleEsc = (e) => e.key === "Escape" && (setSelectedProduct(null) || setShowCommand(false));
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
+  }, []);
+
+  const toggleFavorite = useCallback((id) => {
+    setFavorites(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   }, []);
 
   const filteredGrid = useMemo(() => 
@@ -217,69 +174,97 @@ const ProductsRevolution = () => {
         `}
       </style>
 
-      {/* 1. MOBILE-OPTIMIZED HERO */}
+      {/* 1. DYNAMIC HERO SLIDER */}
       <div className="relative min-h-[85vh] md:h-screen w-full flex items-end md:items-center overflow-hidden bg-slate-50">
         
-        {/* MOBILE: Background Image Overlay (Behind Text) */}
+        {/* MOBILE: Background Image Layer */}
         <div className="absolute inset-0 md:hidden">
-          <img 
-            src={heroProduct.image} 
-            alt={heroProduct.name} 
-            className="w-full h-full object-cover opacity-90"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+           {heroSlides.map((slide, index) => (
+             <div 
+               key={slide.id}
+               className={`absolute inset-0 transition-all duration-1000 ease-in-out ${index === currentHeroSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`}
+             >
+                <img 
+                  src={slide.image} 
+                  alt={slide.name} 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+             </div>
+           ))}
         </div>
 
         {/* DESKTOP: Background Elements */}
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-100 rounded-full filter blur-3xl opacity-60 animate-pulse hidden md:block"></div>
         
-        {/* Main Content Container */}
         <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-8 p-6 md:p-16 max-w-7xl mx-auto w-full">
           
           {/* Text Content */}
-          {/* MOBILE: White text over image / DESKTOP: Dark text */}
-          <div className="text-left pb-10 md:pb-0 text-white md:text-slate-900">
-            <span className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur md:bg-white/50 md:border-slate-200 border border-white/20 rounded-full text-xs font-mono uppercase tracking-widest mb-4">
-              <Sparkles className="w-3 h-3 text-blue-400 md:text-blue-600" /> Featured Drop
-            </span>
-            <h1 className="text-4xl md:text-8xl font-heading font-bold tracking-tighter leading-none mb-2 md:mb-4">
-              {heroProduct.name}
-            </h1>
-            <p className="text-base md:text-2xl text-slate-300 md:text-slate-500 mb-6 md:mb-8 max-w-md">
-              The pinnacle of technology. Designed for the future.
-            </p>
-            <div className="flex items-center gap-4">
-              <button 
-                onClick={() => setSelectedProduct(heroProduct)}
-                className="px-6 md:px-8 py-3 md:py-4 bg-white text-slate-900 md:bg-slate-900 md:text-white font-heading font-bold uppercase tracking-wide hover:bg-blue-600 hover:text-white transition-colors rounded-full md:rounded-none"
+          <div className="text-left pb-10 md:pb-0 text-white md:text-slate-900 relative h-[200px] md:h-auto">
+            
+            {heroSlides.map((slide, index) => (
+              <div 
+                key={slide.id}
+                className={`transition-all duration-700 ease-in-out absolute inset-0 ${index === currentHeroSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}`}
               >
-                Explore Now
-              </button>
-              <span className="text-2xl md:text-4xl font-heading font-bold">{formatPrice(heroProduct.price)}</span>
+                <span className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur md:bg-white/50 md:border-slate-200 border border-white/20 rounded-full text-xs font-mono uppercase tracking-widest mb-4">
+                  <Sparkles className="w-3 h-3 text-blue-400 md:text-blue-600" /> Featured Drop
+                </span>
+                <h1 className="text-4xl md:text-8xl font-heading font-bold tracking-tighter leading-none mb-2 md:mb-4">
+                  {slide.name}
+                </h1>
+                <p className="text-base md:text-2xl text-slate-300 md:text-slate-500 mb-6 md:mb-8 max-w-md">
+                  The pinnacle of technology. Designed for the future.
+                </p>
+                <div className="flex items-center gap-4">
+                  <button 
+                    onClick={() => setSelectedProduct(slide)}
+                    className="px-6 md:px-8 py-3 md:py-4 bg-white text-slate-900 md:bg-slate-900 md:text-white font-heading font-bold uppercase tracking-wide hover:bg-blue-600 hover:text-white transition-colors rounded-full md:rounded-none"
+                  >
+                    Explore Now
+                  </button>
+                  <span className="text-2xl md:text-4xl font-heading font-bold">{formatPrice(slide.price)}</span>
+                </div>
+              </div>
+            ))}
+
+            <div className="absolute bottom-[-40px] left-0 flex gap-3">
+              {heroSlides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentHeroSlide(index)}
+                  className={`transition-all duration-300 ${index === currentHeroSlide ? 'w-8 h-1 bg-blue-500' : 'w-1 h-1 bg-white/40 md:bg-slate-300 rounded-full'}`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
             </div>
           </div>
 
-          {/* DESKTOP: Image Right */}
-          <div className="relative w-full h-[70vh] hidden md:flex items-center justify-center">
+          {/* DESKTOP: Image Layer */}
+          <div className="relative w-full h-[70vh] hidden md:flex items-center justify-center overflow-hidden">
              <div className="absolute inset-0 flex items-center justify-center opacity-10">
                 <div className="w-[600px] h-[600px] border border-slate-300 rounded-full"></div>
              </div>
-             <img 
-               src={heroProduct.image} 
-               alt={heroProduct.name} 
-               className="w-4/5 h-4/5 object-contain drop-shadow-2xl transition-transform duration-1000 hover:scale-105"
-             />
+             
+             {heroSlides.map((slide, index) => (
+               <div 
+                 key={slide.id}
+                 className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ease-in-out ${index === currentHeroSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}
+               >
+                 <img 
+                   src={slide.image} 
+                   alt={slide.name} 
+                   className="w-4/5 h-4/5 object-contain drop-shadow-2xl"
+                 />
+               </div>
+             ))}
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 md:bottom-10 flex flex-col items-center gap-2 animate-bounce z-20">
-          <span className="text-xs font-mono uppercase tracking-widest text-white/60 md:text-slate-400">Scroll</span>
-          <ChevronDown className="w-5 h-5 text-white/60 md:text-slate-400" />
-        </div>
+        
       </div>
 
-      {/* 2. MOBILE FEED GRID (2 Columns) */}
+      {/* 2. PRODUCT GRID */}
       <div className="relative py-8 md:py-20 px-4 md:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-6 md:mb-12 px-0 md:px-4">
@@ -289,7 +274,6 @@ const ProductsRevolution = () => {
             </div>
           </div>
 
-          {/* Mobile: 2 Column Grid / Desktop: 4 Column Fluid Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[minmax(280px,auto)]">
             {filteredGrid.map((product, index) => (
               <ProductCard 
@@ -298,17 +282,20 @@ const ProductsRevolution = () => {
                 index={index}
                 onOpen={setSelectedProduct}
                 isHero={false}
+                isFavorite={favorites.has(product.id)}
+                onToggleFavorite={toggleFavorite}
               />
             ))}
           </div>
         </div>
       </div>
 
-      {/* 3. FLOATING ORB NAVIGATION */}
+      {/* Floating Action Button */}
       <div className="fixed bottom-6 right-6 z-40">
         <button 
           onClick={() => setShowCommand(!showCommand)}
           className="w-14 h-14 md:w-16 md:h-16 bg-slate-900 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform border-4 border-white"
+          aria-label="Open command menu"
         >
           {showCommand ? <X className="w-5 h-5 md:w-6 md:h-6" /> : <Command className="w-5 h-5 md:w-6 md:h-6" />}
         </button>
@@ -346,7 +333,7 @@ const ProductsRevolution = () => {
         </div>
       )}
 
-      {/* Immersive Modal */}
+      {/* Modal Integration */}
       <ImmersiveModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
     </div>
   );

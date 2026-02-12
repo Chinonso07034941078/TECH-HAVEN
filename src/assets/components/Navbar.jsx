@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, Search, ShoppingCart } from 'lucide-react';
 
+
 export default function Navbar() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -10,7 +11,6 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Update state based on scroll position for shadows
       setScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
@@ -26,7 +26,6 @@ export default function Navbar() {
 
   const isActive = (path) => location.pathname === path;
 
-  // Dynamic classes based on scroll position
   const navHeight = scrolled ? 'h-[75px]' : 'h-[80px]';
   const navShadow = scrolled ? 'shadow-lg' : 'shadow-sm';
 
@@ -38,7 +37,6 @@ export default function Navbar() {
          .font-heading { font-family: 'Rajdhani', sans-serif; }
          .font-body { font-family: 'Barlow', sans-serif; }
          .font-mono { font-family: 'Source Code Pro', monospace; }
-         /* Custom "border-b-3" utility */
          .border-b-3 { border-bottom-width: 3px; }
         `}
       </style>
@@ -46,18 +44,15 @@ export default function Navbar() {
       <nav className={`fixed top-0 left-0 right-0 z-50 bg-white border-b-2 border-slate-300 transition-all duration-300 ${navHeight} ${navShadow}`}>
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-full flex justify-between items-center">
           
-          {/* Logo Section */}
+          {/* Logo Section - Replaced Text with Image */}
           <div className="flex items-center group cursor-pointer z-10">
-            <Link to="/" className="flex items-center gap-3">
-                           
-              {/* Brand Text */}
-              <div className="flex flex-col">
-                <h1 className="text-2xl md:text-3xl font-heading font-bold uppercase tracking-[0.1em] bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent leading-none">
-                  Techhaven
-                </h1>
-                <span className="text-[10px] font-mono font-medium text-blue-700 tracking-widest uppercase mt-0.5">
-                  Gadgets
-                </span>
+            <Link to="/" className="flex items-center">
+              <div className="relative overflow-hidden">
+                <img 
+                  src='https://res.cloudinary.com/dnvgl9k4i/image/upload/v1770907678/ONE_lrlott.jpg ' 
+                  alt="TechHaven Logo" 
+                  className="h-16 md:h-17 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                />
               </div>
             </Link>
           </div>
@@ -83,7 +78,6 @@ export default function Navbar() {
 
           {/* Action Buttons */}
           <div className="hidden md:flex items-center gap-2">
-            {/* Search Button - Icon Only */}
             <button 
               onClick={() => navigate('/products')}
               className="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
@@ -92,14 +86,12 @@ export default function Navbar() {
               <Search className="w-5 h-5" />
             </button>
             
-            {/* Cart Button - Dark Secondary */}
             <button 
               onClick={() => navigate('/products')}
               className="relative w-10 h-10 bg-slate-800 hover:bg-slate-900 text-white flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
               aria-label="Shopping Cart"
             >
               <ShoppingCart className="w-5 h-5" />
-              {/* Simple Badge Dot */}
               <span className="absolute -top-1 -right-1 w-3 h-3 bg-blue-600 border-2 border-white"></span>
             </button>
           </div>
@@ -141,7 +133,6 @@ export default function Navbar() {
                       /{item.name.toLowerCase()}
                     </span>
                   </Link>
-                  {/* Divider - not on last item */}
                   {index < navItems.length - 1 && <div className="border-b border-slate-200"></div>}
                 </li>
               ))}

@@ -6,11 +6,13 @@ import About from "./pages/About.jsx";
 import Contact from "./pages/Contacts";
 import Products from "./pages/Products"
 import "./index.css";
+import ScrollToTop from "./assets/components/ScrollToTop.jsx";
 
 
 export default function App() {
   return (
     <div className="bg-gray-900 min-h-screen flex flex-col">
+      <ScrollToTop />
       <Navbar />
       <main className="flex-grow">
         <Routes>

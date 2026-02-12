@@ -1,17 +1,16 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Youtube, ArrowUpRight } from 'lucide-react';
 
 export default function Footer() {
   const navigate = useNavigate();
   
-  const quickLinks = [
-    { name: 'Shop All', path: '/products' },
-    { name: 'New Arrivals', path: '/products' },
-    { name: 'Best Sellers', path: '/products' },
-    { name: 'Support', path: '/contact' },
-    { name: 'About Us', path: '/about' }
-  ];
+ const quickLinks = [
+  { name: 'Home', path: '/' },
+  { name: 'Shop', path: '/products' },
+  { name: 'About', path: '/about' },
+  { name: 'Contact', path: '/contact' }
+];
 
   return (
     <footer className="relative bg-black text-white font-body overflow-hidden border-t border-blue-500/10">
@@ -63,7 +62,26 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Navigation Links */}
+         {/* Navigation Links */}
+<div className="md:col-span-3 md:col-start-7">
+  <h3 className="text-xs font-mono text-blue-500 uppercase tracking-widest mb-6 flex items-center gap-2">
+    <span className="w-2 h-2 bg-blue-500 animate-pulse"></span>
+    Navigation
+  </h3>
+  <ul className="space-y-3">
+    {quickLinks.map((link, index) => (
+      <li key={index}>
+        <Link
+          to={link.path}
+          className="group flex items-center gap-2 text-slate-400 hover:text-white transition-colors duration-150 cursor-pointer"
+        >
+          <span className="w-1.5 h-px bg-slate-600 group-hover:w-3 group-hover:bg-blue-500 transition-all duration-300"></span>
+          <span className="text-sm font-body">{link.name}</span>
+        </Link>
+      </li>
+    ))}
+  </ul>
+</div> {/* Navigation Links */}
           <div className="md:col-span-3 md:col-start-7">
             <h3 className="text-xs font-mono text-blue-500 uppercase tracking-widest mb-6 flex items-center gap-2">
               <span className="w-2 h-2 bg-blue-500 animate-pulse"></span>
@@ -119,24 +137,46 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Social Links - Blueprint Style */}
-            <div className="flex gap-3 mt-6 pt-6 border-t border-slate-800">
-              {[
-                { icon: Facebook, label: 'FB' },
-                { icon: Instagram, label: 'IG' },
-                { icon: Twitter, label: 'TW' },
-                { icon: Youtube, label: 'YT' }
-              ].map((social, index) => (
-                <a
-                  key={index}
-                  href="#"
-                  className="w-8 h-8 border border-slate-700 flex items-center justify-center text-slate-500 hover:text-blue-500 hover:border-blue-500 hover:bg-blue-500/10 transition-all duration-300"
-                  aria-label={social.label}
-                >
-                  <social.icon className="w-4 h-4" />
-                </a>
-              ))}
-            </div>
+         {/* Social Links - Blueprint Style */}
+<div className="flex gap-3 mt-6 pt-6 border-t border-slate-800">
+  {[
+    { 
+      icon: Facebook, 
+      label: 'Facebook', 
+      href: 'https://www.facebook.com/okorie.favour.796' 
+    },
+    { 
+      icon: Instagram, 
+      label: 'Instagram', 
+      href: 'https://www.instagram.com/techhaven_gadgets?igsh=eWE5eHQ1MmRxbDNw' 
+    },
+    { 
+      // Custom TikTok Icon Component (Lucide doesn't have one built-in)
+      icon: (props) => (
+        <svg 
+          viewBox="0 0 24 24" 
+          fill="currentColor" 
+          {...props}
+        >
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+        </svg>
+      ),
+      label: 'TikTok', 
+      href: 'https://vm.tiktok.com/ZS9J9ka75t24D-V0R7c/' 
+    }
+  ].map((social, index) => (
+    <a
+      key={index}
+      href={social.href}
+      target="_blank" // Opens in new tab
+      rel="noopener noreferrer" // Security best practice
+      className="w-8 h-8 border border-slate-700 flex items-center justify-center text-slate-500 hover:text-blue-500 hover:border-blue-500 hover:bg-blue-500/10 transition-all duration-300"
+      aria-label={social.label}
+    >
+      <social.icon className="w-4 h-4" />
+    </a>
+  ))}
+</div>
           </div>
         </div>
 

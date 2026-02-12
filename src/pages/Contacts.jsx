@@ -109,11 +109,7 @@ export default function Contacts() {
           </p>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce z-10">
-          <span className="text-xs font-mono uppercase text-slate-400">Scroll</span>
-          <ArrowRight className="w-4 h-4 text-blue-500 rotate-90" />
-        </div>
+        
       </section>
 
       {/* 2. MAIN CONTENT (WHITE BACKGROUND) */}

@@ -80,7 +80,7 @@ export default function HomeCategories() {
             <div
               key={category.name}
               onClick={() => handleCategoryClick(category.name)}
-              className="group relative my-4 cursor-pointer transition-all duration-300 hover:bg-slate-950"
+              className="group relative m-4 cursor-pointer transition-all duration-300 hover:bg-slate-950"
             >
               <div className="relative aspect-[3/4] overflow-hidden">
                 
